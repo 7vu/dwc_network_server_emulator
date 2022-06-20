@@ -143,9 +143,9 @@ class Gamestats(LineReceiver):
     def rawDataReceived(self, data):
         try:
             # Decrypt packet
-            self.remaining_message += data
+            self.remaining_message += data.decode('utf-8')
 
-            if "\\final\\" not in data:
+            if b"\\final\\" not in data:
                 return
 
             msg = str(self.crypt(self.remaining_message))
@@ -405,8 +405,8 @@ class Gamestats(LineReceiver):
         key_len = len(key)
         output = bytearray(data.encode("ascii"))
 
-        if "\\final\\" in output:
-            end = output.index("\\final\\")
+        if b"\\final\\" in output:
+            end = output.index(b"\\final\\")
         else:
             end = len(output)
 

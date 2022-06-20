@@ -231,7 +231,7 @@ class NasHTTPServerHandler(http.server.BaseHTTPRequestHandler):
             self.send_header("X-Organization", "Nintendo")
             self.send_header("Server", "BigIP")
             self.end_headers()
-            self.wfile.write("ok")
+            self.wfile.write(bytes("ok", 'utf-8'))
         except:
             logger.log(logging.ERROR, "Exception occurred on GET request!")
             logger.log(logging.ERROR, "%s", traceback.format_exc())

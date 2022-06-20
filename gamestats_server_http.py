@@ -65,7 +65,7 @@ class GameStatsBase(object):
                     h.update(key + base64.urlsafe_b64encode(ret) + key)
                     ret += h.hexdigest()
 
-            conn.wfile.write(ret)
+            conn.wfile.write(bytes(ret, 'utf-8'))
         except:
             logger.log(logging.ERROR,
                        "Unknown exception: %s",
