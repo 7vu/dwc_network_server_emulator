@@ -51,7 +51,7 @@ admin_password = None
 
 if os.path.exists('adminpageconf.json'):
     try:
-        adminpageconf = json.loads(file('adminpageconf.json').read().strip())
+        adminpageconf = json.loads(open('adminpageconf.json').read().strip())
         admin_username = str(adminpageconf['username'])
         admin_password = str(adminpageconf['password'])
     except Exception as e:
@@ -76,7 +76,7 @@ class AdminPage(resource.Resource):
 
     def get_header(self, title=None):
         if not title:
-            title = 'AltWfc Admin Page'
+            title = 'AltWFC Admin Page'
         s = """
         <html>
         <head>
@@ -105,12 +105,8 @@ class AdminPage(resource.Resource):
         error_message = "Authorization required!"
         address = request.getClientIP()
         try:
-            expected_auth = base64.encodestring(
-                admin_username + ":" + admin_password
-            ).strip()
-            actual_auth = request.getAllHeaders()['authorization'] \
-                .replace("Basic ", "") \
-                .strip()
+            expected_auth = base64.b64encode((admin_username + ":" + admin_password).encode("utf-8")).decode("utf-8").strip()
+            actual_auth = request.getAllHeaders()[b'authorization'].decode('utf-8').replace("Basic ", "").strip()
             if actual_auth == expected_auth:
                 logger.log(logging.INFO, "%s Auth Success", address)
                 is_auth = True
@@ -120,7 +116,7 @@ class AdminPage(resource.Resource):
             logger.log(logging.INFO, "%s Auth Failure", address)
             request.setResponseCode(response_code)
             request.setHeader('WWW-Authenticate', 'Basic realm="ALTWFC"')
-            request.write(error_message)
+            request.write(bytes(error_message, 'utf-8'))
         return is_auth
 
     def update_banlist(self, request):
@@ -445,9 +441,9 @@ class AdminPage(resource.Resource):
     def render_GET(self, request):
         if not adminpageconf:
             self.render_not_available(request)
-            return ""
+            return bytes("", 'utf-8')
         if not self.is_authorized(request):
-            return ""
+            return bytes("", 'utf-8')
 
         title = None
         response = ''
@@ -460,21 +456,21 @@ class AdminPage(resource.Resource):
         elif request.path == "/consoles":
             title = "AltWfc Console List"
             response = self.render_consolelist(request)
-        return self.get_header(title) + response + self.get_footer()
+        return bytes(self.get_header(title) + response + self.get_footer(), 'utf-8')
 
     def render_POST(self, request):
         if not adminpageconf:
             self.render_not_available(request)
-            return ""
+            return bytes("", 'utf-8')
         if not self.is_authorized(request):
-            return ""
+            return bytes("", 'utf-8')
 
         if request.path == "/updatebanlist":
-            return self.update_banlist(request)
+            return bytes(self.update_banlist(request), 'utf-8')
         if request.path == "/updateconsolelist":
-            return self.update_consolelist(request)
+            return bytes(self.update_consolelist(request), 'utf-8')
         else:
-            return self.get_header() + self.get_footer()
+            return bytes(self.get_header() + self.get_footer(), 'utf-8')
 
 
 class AdminPageServer(object):

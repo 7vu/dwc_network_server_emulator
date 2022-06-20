@@ -112,7 +112,7 @@ class RegPage(resource.Resource):
         <table border='1'>""" % ('aa:bb:cc:dd:ee:ff', 'aa-bb-cc-dd-ee-ff')
         dbconn.close()
         request.setHeader("Content-Type", "text/html; charset=utf-8")
-        return responsedata
+        return bytes(responsedata, 'utf-8')
 
     def render_GET(self, request):
         title = None
@@ -121,13 +121,13 @@ class RegPage(resource.Resource):
             title = 'Register a Console'
             response = self.render_maclist(request)
 
-        return self.get_header(title) + response + self.get_footer()
+        return bytes(self.get_header(title) + response + self.get_footer(), 'utf-8')
 
     def render_POST(self, request):
         if request.path == "/updatemaclist":
-            return self.update_maclist(request)
+            return bytes(self.update_maclist(request), 'utf-8')
         else:
-            return self.get_header() + self.get_footer()
+            return bytes(self.get_header() + self.get_footer(), 'utf-8')
 
 
 class RegPageServer(object):

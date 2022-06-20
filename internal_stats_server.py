@@ -97,7 +97,8 @@ class StatsPage(resource.Resource):
                                   for game in server_list
                                   if server_list[game])
             output += self.footer % (self.stats.get_last_update_time())
-
+        
+        output = bytes(output, 'utf-8')
         return output
 
 
