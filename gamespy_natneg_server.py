@@ -744,7 +744,7 @@ class GameSpyNatNegUDPServer(socketserver.UDPServer):
 
         self.server_manager = GameSpyServerDatabase(
             address=dwc_config.get_ip_port('GameSpyManager'),
-            authkey=""
+            authkey="".encode("utf-8")
         )
         self.server_manager.connect()
 

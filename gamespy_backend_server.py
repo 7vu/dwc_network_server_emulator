@@ -116,7 +116,7 @@ class GameSpyBackendServer(object):
 
     def start(self):
         address = dwc_config.get_ip_port('GameSpyManager')
-        password = ""
+        password = "".encode("utf-8")
 
         logger.log(logging.INFO,
                    "Started server on %s:%d...",
