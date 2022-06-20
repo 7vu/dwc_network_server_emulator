@@ -82,7 +82,7 @@ class PlayerSearch(LineReceiver):
         try:
             logger.log(logging.DEBUG, "SEARCH RESPONSE: %s", data)
 
-            data = self.leftover + data
+            data = self.leftover + data.decode('utf-8')
             commands, self.leftover = gs_query.parse_gamespy_message(data)
 
             for data_parsed in commands:

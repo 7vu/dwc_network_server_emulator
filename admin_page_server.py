@@ -253,7 +253,7 @@ class AdminPage(resource.Resource):
     def render_not_available(self, request):
         request.setResponseCode(403)
         request.setHeader('WWW-Authenticate', 'Basic realm="ALTWFC"')
-        request.write('No admin credentials set. Admin page is not available.')
+        request.write(bytes('No admin credentials set. Admin page is not available.', 'utf-8'))
 
     def render_blacklist(self, request):
         sqlstatement = """

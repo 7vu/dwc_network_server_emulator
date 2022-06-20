@@ -156,7 +156,7 @@ class PlayerSession(LineReceiver):
             ])
 
             self.log(logging.DEBUG, "SENDING: '%s'...", msg)
-            self.transport.write(bytes(msg))
+            self.transport.write(bytes(msg, 'utf-8'))
         except:
             self.log(logging.ERROR,
                      "Unknown exception: %s",
@@ -190,7 +190,7 @@ class PlayerSession(LineReceiver):
             # stored in the variable remaining_message. On the next
             # rawDataReceived command, the remaining message and the data
             # are combined to create a full command.
-            data = self.remaining_message + data
+            data = self.remaining_message + data.decode('utf-8')
 
             # Check to make sure the data buffer starts with a valid command.
             if len(data) > 0 and data[0] != '\\':
