@@ -23,7 +23,7 @@ Configuration module.
 
 try:
     # Python 2
-    import ConfigParser
+    import configparser
 except ImportError:
     # Python 3
     import configparser as ConfigParser
@@ -34,7 +34,7 @@ import other.utils as utils
 def get_config_filename(filename='altwfc.cfg'):
     """Return the config filename that will be used."""
     try:
-        config = ConfigParser.RawConfigParser(allow_no_value=True)
+        config = configparser.RawConfigParser(allow_no_value=True)
         config.read(filename)
         if config.getboolean('Config', 'AlternativeConfig'):
             return config.get('Config', 'AlternativeConfigFile')
@@ -45,28 +45,28 @@ def get_config_filename(filename='altwfc.cfg'):
 
 def get_ip_port(section, filename='altwfc.cfg'):
     """Return a tuple (IP, Port) of the corresponding section."""
-    config = ConfigParser.RawConfigParser(allow_no_value=True)
+    config = configparser.RawConfigParser(allow_no_value=True)
     config.read(get_config_filename(filename))
     return (config.get(section, 'IP'), config.getint(section, 'Port'))
 
 
 def get_ip(section, filename='altwfc.cfg'):
     """Return the IP of the corresponding section."""
-    config = ConfigParser.RawConfigParser(allow_no_value=True)
+    config = configparser.RawConfigParser(allow_no_value=True)
     config.read(get_config_filename(filename))
     return config.get(section, 'IP')
 
 
 def get_port(section, filename='altwfc.cfg'):
     """Return the port of the corresponding section."""
-    config = ConfigParser.RawConfigParser(allow_no_value=True)
+    config = configparser.RawConfigParser(allow_no_value=True)
     config.read(get_config_filename(filename))
     return config.getint(section, 'Port')
 
 
 def get_logger(section, filename='altwfc.cfg'):
     """Return the logger of the corresponding section."""
-    config = ConfigParser.RawConfigParser(allow_no_value=True)
+    config = configparser.RawConfigParser(allow_no_value=True)
     config.read(get_config_filename(filename))
     return utils.create_logger(
         config.get(section, 'LoggerName'),
@@ -79,6 +79,6 @@ def get_logger(section, filename='altwfc.cfg'):
 
 def get_svchost(section, filename='altwfc.cfg'):
     """Return the svchost of the corresponding section."""
-    config = ConfigParser.RawConfigParser(allow_no_value=True)
+    config = configparser.RawConfigParser(allow_no_value=True)
     config.read(get_config_filename(filename))
     return config.get(section, 'SvcHost')

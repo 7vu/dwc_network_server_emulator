@@ -189,7 +189,7 @@ class GamespyDatabase(object):
         if not row:
             return None
 
-        return dict(itertools.izip(row.keys(), row))
+        return dict(zip(list(row.keys()), row))
 
     # User functions
     def get_next_free_profileid(self):
