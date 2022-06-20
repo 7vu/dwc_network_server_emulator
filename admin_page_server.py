@@ -447,16 +447,19 @@ class AdminPage(resource.Resource):
 
         title = None
         response = ''
-        if request.path == "/banlist":
-            title = 'AltWfc Banned Users'
+        if request.path == b'/banlist':
+            title = 'AltWFC Banned Users'
             response = self.render_banlist(request)
-        elif request.path == "/banhammer":
-            title = 'AltWfc Users'
+        elif request.path == b'/banhammer':
+            title = 'AltWFC Users'
             response = self.render_blacklist(request)
-        elif request.path == "/consoles":
-            title = "AltWfc Console List"
+        elif request.path == b'/consoles':
+            title = "AltWFC Console List"
             response = self.render_consolelist(request)
-        return bytes(self.get_header(title) + response + self.get_footer(), 'utf-8')
+        try:
+            return bytes(self.get_header(title) + response.decode('utf-8') + self.get_footer(), 'utf-8')
+        except (UnicodeDecodeError, AttributeError):
+            return bytes(self.get_header(title) + response + self.get_footer(), 'utf-8')            
 
     def render_POST(self, request):
         if not adminpageconf:

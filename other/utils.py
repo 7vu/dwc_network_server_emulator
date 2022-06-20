@@ -122,7 +122,7 @@ def get_num_from_bytes(data, idx, fmt, bigEndian=False):
 
     Endianness by default is little.
     """
-    return struct.unpack_from("<>"[bigEndian] + fmt, buffer(bytearray(data)), idx)[0]
+    return struct.unpack_from("<>"[bigEndian] + fmt, memoryview(bytearray(data)), idx)[0]
 
 # Instead of passing slices, pass the buffer and index so we can calculate
 # the length automatically.

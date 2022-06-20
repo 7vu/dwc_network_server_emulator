@@ -69,8 +69,8 @@ class RegPage(resource.Resource):
     def update_maclist(self, request):
         address = request.getClientIP()
         dbconn = sqlite3.connect('gpcm.db')
-        macadr = request.args['macadr'][0].strip()
-        actiontype = request.args['action'][0]
+        macadr = request.args[b'macadr'][0].decode("utf-8").strip()
+        actiontype = request.args[b'action'][0].decode("utf-8")
         macadr = macadr.lower()
         if not re.match("[0-9a-f]{2}([-:])[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$",
                         macadr):
@@ -117,14 +117,16 @@ class RegPage(resource.Resource):
     def render_GET(self, request):
         title = None
         response = ''
-        if request.path == "/register":
+        if request.path == b"/register":
             title = 'Register a Console'
             response = self.render_maclist(request)
-
-        return bytes(self.get_header(title) + response + self.get_footer(), 'utf-8')
+        try:
+            return bytes(self.get_header(title) + response.decode('utf-8') + self.get_footer(), 'utf-8')
+        except (UnicodeDecodeError, AttributeError):
+            return bytes(self.get_header(title) + response + self.get_footer(), 'utf-8')
 
     def render_POST(self, request):
-        if request.path == "/updatemaclist":
+        if request.path == b"/updatemaclist":
             return bytes(self.update_maclist(request), 'utf-8')
         else:
             return bytes(self.get_header() + self.get_footer(), 'utf-8')

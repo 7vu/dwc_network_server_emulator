@@ -67,7 +67,7 @@ class StatsPage(resource.Resource):
         self.stats = stats
 
     def render_GET(self, request):
-        if "/".join(str(request.postpath)) == "json":
+        if "/".join(str(request.postpath)) == "[/b/'/j/s/o/n/'/]":
             raw = True
             force_update = True
         else:
